@@ -6,15 +6,18 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 import nsv.smartmeetingspace.services.Service;
 import nsv.smartmeetingspace.clientUI.UIConstants;
 
+/**
+ * @author Dr. Dominic Carr
+ * This file is a part of ProjectSample made available by National College of Ireland 
+ * available at https://moodle.ncirl.ie
+ */
 public class ServiceUI extends JFrame {
 
     protected JPanel panel;

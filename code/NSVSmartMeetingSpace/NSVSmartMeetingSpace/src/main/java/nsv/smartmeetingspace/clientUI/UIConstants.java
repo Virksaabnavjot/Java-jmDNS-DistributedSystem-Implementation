@@ -1,8 +1,9 @@
 package nsv.smartmeetingspace.clientUI;
 
 /**
- *
  * @author Dr. Dominic Carr
+ * This file is a part of ProjectSample made available by National College of Ireland 
+ * available at https://moodle.ncirl.ie
  */
 public class UIConstants {
 

@@ -13,7 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-import nsv.smartmeetingspace.clientUI.ServiceUI;
+import nsv.smartmeetingspace.serviceUI.ServiceUI;
 
 public abstract class Service extends Thread {
 

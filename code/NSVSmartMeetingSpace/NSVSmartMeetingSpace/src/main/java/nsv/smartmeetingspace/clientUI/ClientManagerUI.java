@@ -23,7 +23,7 @@ public class ClientManagerUI extends JFrame {
     private static final long serialVersionUID = -4512962459244007477L;
 
     public ClientManagerUI(final ClientManager clientManager) {
-        super("Home Management");
+        super("NSV Smart Meeting Space");
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

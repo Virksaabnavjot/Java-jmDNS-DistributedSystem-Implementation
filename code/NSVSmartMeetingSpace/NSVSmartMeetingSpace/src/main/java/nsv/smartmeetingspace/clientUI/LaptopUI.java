@@ -11,7 +11,7 @@ import nsv.smartmeetingspace.clients.LaptopClient;
 public class LaptopUI extends ClientUI {
 
     private static final long serialVersionUID = -5318589393275157185L;
-    private JButton warm;
+    private JButton on;
     private final LaptopClient parent;
 
     public LaptopUI(LaptopClient laptopClient) {
@@ -23,14 +23,14 @@ public class LaptopUI extends ClientUI {
     @Override
     public void init() {
         super.init();
-        warm = new JButton("Warm");
+        on = new JButton("On");
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
-        add(new JButton[]{warm});
+        add(new JButton[]{on});
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == warm) {
+        if (e.getSource() == on) {
             parent.warm();
         }
     }

@@ -3,20 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package navjot.ds.nsv.smartmeetingspace.UI;
-
-import java.util.Vector;
+package nsv.smartmeetingspace.clientUI;
 
 /**
  *
  * @author Navjot Singh Virk
  */
-public class ClientUI extends javax.swing.JFrame {
+public class ServiceUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ClientGUI
+     * Creates new form ServiceGUI
      */
-    public ClientUI() {
+    public ServiceUI() {
         initComponents();
     }
 
@@ -62,13 +60,13 @@ public class ClientUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -76,12 +74,12 @@ public class ClientUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClientUI().setVisible(true);
+                new ServiceUI().setVisible(true);
             }
         });
     }
 
-    public void addChoices(Vector<String> d) {
+    public void updateArea(String client_not_accessible) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

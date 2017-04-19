@@ -3,18 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package navjot.ds.nsv.smartmeetingspace.UI;
+package nsv.smartmeetingspace.clientUI;
+
+import java.util.Vector;
 
 /**
  *
  * @author Navjot Singh Virk
  */
-public class ServiceUI extends javax.swing.JFrame {
+public class ClientUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ServiceGUI
+     * Creates new form ClientGUI
      */
-    public ServiceUI() {
+    public ClientUI() {
         initComponents();
     }
 
@@ -60,13 +62,13 @@ public class ServiceUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ServiceUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -74,12 +76,20 @@ public class ServiceUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ServiceUI().setVisible(true);
+                new ClientUI().setVisible(true);
             }
         });
     }
 
-    public void updateArea(String client_not_accessible) {
+    public void addChoices(Vector<String> d) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void refresh(Vector<String> d) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void updateArea(String server_Down__attempting_to_poll_service) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

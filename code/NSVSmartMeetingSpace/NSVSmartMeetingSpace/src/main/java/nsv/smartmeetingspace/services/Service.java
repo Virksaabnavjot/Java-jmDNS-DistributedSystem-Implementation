@@ -2,7 +2,7 @@
  * This class have been used from the ProjectSample Code available on Moodle https://moodle.ncirl.ie 
  *@author dominic
  */
-package navjot.ds.nsv.smartmeetingspace.services;
+package nsv.smartmeetingspace.services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-import navjot.ds.nsv.smartmeetingspace.UI.ServiceUI;
+import nsv.smartmeetingspace.clientUI.ServiceUI;
 
 public abstract class Service extends Thread {
 

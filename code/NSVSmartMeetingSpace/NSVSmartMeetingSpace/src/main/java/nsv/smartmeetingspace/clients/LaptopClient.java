@@ -1,4 +1,4 @@
-package navjot.ds.nsv.smartmeetingspace.clients;
+package nsv.smartmeetingspace.clients;
 
 /**
  * @author Navjot singh virk, 18th april 2017, 4:47 am

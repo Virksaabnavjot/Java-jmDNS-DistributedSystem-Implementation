@@ -1,4 +1,4 @@
-package navjot.ds.nsv.smartmeetingspace.clients;
+package nsv.smartmeetingspace.clients;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 import javax.jmdns.ServiceInfo;
 import javax.swing.JPanel;
-import navjot.ds.nsv.smartmeetingspace.UI.ClientUI;
+import nsv.smartmeetingspace.clientUI.ClientUI;
 
 /**
  * Abstract super class for all clients.

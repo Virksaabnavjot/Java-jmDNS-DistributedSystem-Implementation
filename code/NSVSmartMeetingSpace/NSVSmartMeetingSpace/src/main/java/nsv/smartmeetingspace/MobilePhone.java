@@ -7,9 +7,9 @@ package nsv.smartmeetingspace;
 
 /**
  *
- * @author Soffyan Ali
- * Class description: This class describes the Mobile Phone and the functionality it supports
+ * @author Soffyan Ali Class description: This class describes the Mobile Phone
+ * and the functionality it supports
  */
 public class MobilePhone {
-    
+
 }

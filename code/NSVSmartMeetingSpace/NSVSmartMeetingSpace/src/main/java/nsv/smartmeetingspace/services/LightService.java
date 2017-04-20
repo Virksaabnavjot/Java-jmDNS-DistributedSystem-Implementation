@@ -5,6 +5,6 @@ package nsv.smartmeetingspace.services;
  * Class description: This service class specify what operations can be supported on PDAs.
  * Edit history: ..
  */
-public class PDAService {
+public class LightService {
     
 }

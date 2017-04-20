@@ -5,6 +5,6 @@ package nsv.smartmeetingspace.clients;
  * Class description: Client for PDA service
  * Edit history: ..
  */
-public class PDAClient {
+public class LightClient {
     
 }

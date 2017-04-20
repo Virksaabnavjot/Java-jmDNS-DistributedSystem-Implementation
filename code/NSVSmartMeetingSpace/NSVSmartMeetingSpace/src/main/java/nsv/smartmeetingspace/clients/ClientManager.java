@@ -19,8 +19,12 @@ public class ClientManager implements ServiceListener {
 
     private final ClientManagerUI ui;
     private JmDNS jmdns;
-    //private final BedClient client = new BedClient();
+    
     private final LaptopClient client = new LaptopClient();
+    //private final MobilePhoneClient client = new MobilePhoneClient();
+    //private final PDAClient client = new PDAClient();
+    //private final ProjectorClient client = new ProjectorClient();
+    
     public ClientManager() {
         try {
             jmdns = JmDNS.create(InetAddress.getLocalHost());

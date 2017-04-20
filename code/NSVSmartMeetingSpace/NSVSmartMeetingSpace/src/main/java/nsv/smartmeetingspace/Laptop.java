@@ -7,8 +7,8 @@ package nsv.smartmeetingspace;
  */
 public class Laptop {
     private String deviceName, deviceLocation;
-    private int batteryStatus, brightness, volume;
-    private boolean swichedOn, chargerPlugged, onMute;
+    private int brightness;
+    private boolean swichedOn;
     
     public Laptop(){
         

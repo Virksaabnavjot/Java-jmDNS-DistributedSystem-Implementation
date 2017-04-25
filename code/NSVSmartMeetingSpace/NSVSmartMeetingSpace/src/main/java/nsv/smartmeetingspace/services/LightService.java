@@ -1,5 +1,6 @@
 package nsv.smartmeetingspace.services;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -19,10 +20,12 @@ public class LightService {
 
     private Light light;
     private static JmDNS jmDNS;
+    private Gson gson;
 
     //constructor
     public LightService() {
         light = new Light(50, true, Arrays.asList("Cool", "Bright DayLight, Dark"));
+        gson = new Gson();
     }
 
     public static void main(String args[]) {
@@ -35,8 +38,10 @@ public class LightService {
             ServiceInfo si = ServiceInfo.create("light.tcp.local.", "Light", 1111, "Navsingh 40W Bulb");
             jmDNS.registerService(si);
             
-        } catch (IOException ex) {
-            Logger.getLogger(LightService.class.getName()).log(Level.SEVERE, null, ex);
+            
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

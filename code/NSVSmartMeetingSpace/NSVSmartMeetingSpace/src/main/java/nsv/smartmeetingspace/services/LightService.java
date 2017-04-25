@@ -1,5 +1,6 @@
 package nsv.smartmeetingspace.services;
 
+import java.util.Arrays;
 import nsv.smartmeetingspace.Light;
 
 /**
@@ -11,10 +12,10 @@ import nsv.smartmeetingspace.Light;
 public class LightService {
 
     private Light light;
-    
-//constructor
+
+    //constructor
     public LightService() {
-        
+        light = new Light(50, true, Arrays.asList("Cool", "Bright DayLight, Dark"));
     }
 
 }

@@ -59,7 +59,7 @@ public class LightService extends Service {
         return "Loading " + loading + "% complete.";
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         new LightService("Light Service");
     }
 

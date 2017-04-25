@@ -1,6 +1,7 @@
 /*
- * This class have been used from the ProjectSample Code available on Moodle https://moodle.ncirl.ie 
+ *This class have been used from the ProjectSample Code available on Moodle https://moodle.ncirl.ie 
  *@author dominic
+ *Edited by Navjot (Added comments)
  */
 package nsv.smartmeetingspace.services;
 
@@ -25,7 +26,7 @@ public abstract class Service extends Thread {
     protected JmDNS jmdns;
     protected Socket socket;
     protected String status;
-   protected ServiceUI ui;
+    protected ServiceUI ui;
     protected ServiceInfo info;
     protected final String BAD_COMMAND = "bad Command";
     protected String STATUS_REQUEST = "get_status";
@@ -55,9 +56,12 @@ public abstract class Service extends Thread {
             e.printStackTrace();
         }
         try {
+            //creating a JmDNS instance
             jmdns = JmDNS.create(InetAddress.getLocalHost());
             info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT,
                     "params=" + location);
+            
+            //registering service
             jmdns.registerService(info);
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,12 +70,12 @@ public abstract class Service extends Thread {
     }
 
     public void deRegister() {
+        //unregistering Service
         jmdns.unregisterService(info);
         try {
             this.stop();
             my_serverSocket.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -120,7 +124,7 @@ public abstract class Service extends Thread {
             out.println(a);
             out.close();
         } catch (IOException e) {
-            ui.updateArea("Client not accessible");
+            ui.updateArea("Sorry, Client not accessible");
         }
     }
 

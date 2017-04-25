@@ -1,14 +1,11 @@
 package nsv.smartmeetingspace.services;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceInfo;
+import java.util.Timer;
+import java.util.TimerTask;
 import nsv.smartmeetingspace.Light;
+import nsv.smartmeetingspace.serviceUI.ServiceUI;
 
 /**
  * @author Navjot singh virk, 18th april 2017, 4:37 am Class description: This
@@ -16,32 +13,54 @@ import nsv.smartmeetingspace.Light;
  * 25 april, 2:03am by Navjot singh
  *
  */
-public class LightService {
+public class LightService extends Service {
 
     private Light light;
-    private static JmDNS jmDNS;
     private Gson gson;
+    private static ServiceUI ui;
+    private final Timer timer;
+    private int loading;
 
     //constructor
-    public LightService() {
+    public LightService(String name) {
+        super(name, "_light._udp.local.");
+        timer = new Timer();
+        loading = 0;
+        ui = new ServiceUI(this, name);
         light = new Light(50, true, Arrays.asList("Cool", "Bright DayLight, Dark"));
         gson = new Gson();
     }
 
-    public static void main(String args[]) {
-        //error handling through try-catch
-        try {
-            //creating a JmDNS instance
-            jmDNS = JmDNS.create(InetAddress.getLocalHost());
-            
-            //regestering a service
-            ServiceInfo si = ServiceInfo.create("light.tcp.local.", "Light", 1111, "Navsingh 40W Bulb");
-            jmDNS.registerService(si);
-            
-            
-            
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    @Override
+    public void performAction(String a) {
+        if (a.equals("get_status")) {
+            sendBack(getStatus());
+        } else if (a.equals("on")) {
+            timer.schedule(new RemindTask(), 0, 2000);
+            sendBack("OK");
+            ui.updateArea("Light turning ON");
+        } else {
+            sendBack(BAD_COMMAND + " - " + a);
         }
     }
+
+    class RemindTask extends TimerTask {
+
+        @Override
+        public void run() {
+            if (loading < 100) {
+                loading += 10;
+            }
+        }
+    }
+
+    @Override
+    public String getStatus() {
+        return "Loading " + loading + "% complete.";
+    }
+
+    public static void main(String args[]) {
+        new LightService("Light Service");
+    }
+
 }

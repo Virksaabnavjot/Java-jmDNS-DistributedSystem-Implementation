@@ -26,7 +26,7 @@ public class LaptopService extends Service {
     public void performAction(String a) {
         if (a.equals("get_status")) {
             sendBack(getStatus());
-        } else if (a.equals("on")) {
+        } else if (a.equals("Warm")) {
             timer.schedule(new RemindTask(), 0, 2000);
             sendBack("OK");
             ui.updateArea("Laptop turning ON");

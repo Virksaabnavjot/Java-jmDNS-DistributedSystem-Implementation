@@ -9,12 +9,25 @@ import java.util.List;
  */
 public class Light {
 
-    private String deviceName, deviceLocation, powerConsumption;
+    private String deviceName, deviceLocation, powerConsumption, currentMode;
     private int brightness;
-    private boolean swichedOn, currentMode;
+    private boolean swichedOn;
     private List<String> modes;
 
+    //default constructor
     public Light() {
+
+    }
+
+    //parameterised constructor - overriding default constructor
+    public Light(int brightness, boolean switchedOn, List<String> modes) {
+        this.deviceName = "LightBulb";
+        this.deviceLocation = "MeetingRoom 3";
+        this.powerConsumption = "40W";
+        this.currentMode = modes.get(0).toString();
+        this.brightness = brightness;
+        this.swichedOn = switchedOn;
+        this.modes = modes;
 
     }
 
@@ -58,11 +71,11 @@ public class Light {
         this.swichedOn = swichedOn;
     }
 
-    public boolean isCurrentMode() {
+    public String isCurrentMode() {
         return currentMode;
     }
 
-    public void setCurrentMode(boolean currentMode) {
+    public void setCurrentMode(String currentMode) {
         this.currentMode = currentMode;
     }
 

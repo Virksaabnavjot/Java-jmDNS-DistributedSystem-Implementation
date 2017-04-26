@@ -20,8 +20,8 @@ public class ClientManager implements ServiceListener {
     private final ClientManagerUI ui;
     private JmDNS jmdns;
     
-    //private final LightClient client = new LightClient();
-    private final LaptopClient client = new LaptopClient();
+    private final LightClient client = new LightClient();
+    //private final LaptopClient client = new LaptopClient();
     //private final MobilePhoneClient client = new MobilePhoneClient();
     //private final PDAClient client = new PDAClient();
     //private final ProjectorClient client = new ProjectorClient();

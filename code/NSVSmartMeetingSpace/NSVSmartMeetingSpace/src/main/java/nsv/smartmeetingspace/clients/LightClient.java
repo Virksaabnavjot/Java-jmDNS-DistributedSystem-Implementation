@@ -1,15 +1,18 @@
 package nsv.smartmeetingspace.clients;
 
+import java.util.Random;
+import nsv.smartmeetingspace.Light;
 import nsv.smartmeetingspace.clientUI.LightUI;
 
 /**
  * @author Navjot singh virk, 18th april 2017, 4:49 am
- * Class description: Client for PDA service
+ * Class description: Client for Light service
  * Edit history: ..
  */
 public class LightClient extends Client{
-    private final String WARM = "Warm";
-    private boolean isWarming = false;
+
+    private boolean switchedOn = false;
+    private Light light;
     /**
      * Light Client Constructor.
      */
@@ -20,25 +23,40 @@ public class LightClient extends Client{
         name = "Light";
     }
 
-    /**
-     * sends a message to turn on the laptop.
-     */
-    public void warm() {
-        if (!isWarming) {
-            String a = sendMessage(WARM);
+    public void deviceInfo(){
+        
+    }
+    
+    public void switchOnLight() {
+        if (!switchedOn) {
+            String a = sendMessage("SWITCHON");
             if (a.equals(OK)) {
-                isWarming = true;
-                ui.updateArea("Bed is Warming");
+                
+                ui.updateArea("Light Switched On");
+                switchedOn = true;
             }
         } else {
-            ui.updateArea("Bed already Warming");
+            ui.updateArea("Light already Switched On");
         }
     }
 
+    public void changeBrightness() {
+        
+            String a = sendMessage("BRIGHTNESS");
+            if (a.equals(OK)) {
+                //switchedOn = true;
+                
+                //generating a random number for brightness 0 - 100
+                Random random = new Random();
+                int randomNumber = random.nextInt((100 - 0) + 1) + 0;
+                ui.updateArea("Brightness Changed: " +randomNumber+ "%");
+            } 
+    }
+    
     @Override
     public void updatePoll(String msg) {
-        if (msg.equals("Bed is 100% warmed.")) {
-            isWarming = false;
+        if (msg.equals("Battery Low Light Switched off")) {
+            switchedOn = false;
         }
     }
 
@@ -46,6 +64,6 @@ public class LightClient extends Client{
     public void disable() {
         super.disable();
         ui = new LightUI(this);
-        isWarming = false;
+        switchedOn = false;
     }
 }

@@ -35,11 +35,19 @@ public class LightService extends Service {
     public void performAction(String a) {
         if (a.equals("get_status")) {
             sendBack(getStatus());
-        } else if (a.equals("on")) {
+        } else if (a.equals("SWITCHON")) {
             timer.schedule(new RemindTask(), 0, 2000);
             sendBack("OK");
             ui.updateArea("Light turning ON");
-        } else {
+            ui.updateArea(a);
+        } 
+        else if (a.equals("BRIGHTNESS")) {
+            timer.schedule(new RemindTask(), 0, 2000);
+            sendBack("OK");
+            ui.updateArea("Changing Brightness");
+            ui.updateArea(a);
+        }
+        else {
             sendBack(BAD_COMMAND + " - " + a);
         }
     }

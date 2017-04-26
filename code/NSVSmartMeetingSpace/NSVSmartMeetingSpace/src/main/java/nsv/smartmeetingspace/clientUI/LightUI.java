@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nsv.smartmeetingspace.clientUI;
 
 import java.awt.event.ActionEvent;
@@ -11,12 +6,14 @@ import nsv.smartmeetingspace.clients.LightClient;
 
 /**
  *
- * @author navNav
+ * @author Navjot Singh
  */
 public class LightUI extends ClientUI {
     private static final long serialVersionUID = -5318589393275157185L;
     private JButton on;
+    private JButton brightness;
     private final LightClient parent;
+    
 
     public LightUI(LightClient lightClient) {
         super(lightClient);
@@ -28,14 +25,20 @@ public class LightUI extends ClientUI {
     public void init() {
         super.init();
         on = new JButton("On");
+        brightness = new JButton("Brightness");
         scroll.setBounds(5, 40, UIConstants.COMPONENTWIDTH, 300);
+        add(new  JButton[]{brightness});
         add(new JButton[]{on});
+        
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == on) {
-            parent.warm();
+            parent.switchOnLight();
+        }
+        else if (e.getSource() == brightness) {
+            parent.changeBrightness();
         }
     }
 }

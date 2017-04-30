@@ -1,6 +1,8 @@
 package nsv.sms;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import javax.jmdns.JmDNS;
 
 /**
@@ -12,14 +14,28 @@ public class LaptopGUI extends javax.swing.JFrame {
     private static Laptop laptop;
     private static JmDNS jmDNS;
     private static Gson gson;
+    private static int n;
+    private static Thread t;
+    private static boolean e;
+    private static PrintWriter pWriter;
+    private static BufferedReader bReader;
 
-    
     /**
      * Creates new form LaptopGUI
      */
     public LaptopGUI() {
         initComponents();
-        laptop = new Laptop();
+        laptop = new Laptop(20, true);
+        gson = new Gson();
+   
+        dnLbl.setText(laptop.getDeviceName());
+        dlLbl.setText(laptop.getDeviceLocation());
+        bsLbl.setText(Integer.toString(laptop.getBatteryStatus()));
+        bLbl.setText(Integer.toString(laptop.getBrightness()));
+        vLbl.setText(Integer.toString(laptop.getVolume()));
+        //reference Boolean to string http://beginnersbook.com/2015/05/java-boolean-to-string/
+        soLbl.setText(String.valueOf(laptop.isSwichedOn()));
+        cpLbl.setText(String.valueOf(laptop.isChargerPlugged()));
     }
 
     /**
@@ -43,6 +59,13 @@ public class LaptopGUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         switchOnBtn = new javax.swing.JButton();
         volumeSlider = new javax.swing.JSlider();
+        bsLbl = new javax.swing.JLabel();
+        vLbl = new javax.swing.JLabel();
+        bLbl = new javax.swing.JLabel();
+        cpLbl = new javax.swing.JLabel();
+        soLbl = new javax.swing.JLabel();
+        dnLbl = new javax.swing.JLabel();
+        dlLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,6 +106,20 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         switchOnBtn.setText("Switch On");
 
+        bsLbl.setText("jLabel9");
+
+        vLbl.setText("jLabel10");
+
+        bLbl.setText("jLabel11");
+
+        cpLbl.setText("jLabel12");
+
+        soLbl.setText("jLabel13");
+
+        dnLbl.setText("jLabel14");
+
+        dlLbl.setText("jLabel15");
+
         javax.swing.GroupLayout controlsListLayout = new javax.swing.GroupLayout(controlsList);
         controlsList.setLayout(controlsListLayout);
         controlsListLayout.setHorizontalGroup(
@@ -92,19 +129,38 @@ public class LaptopGUI extends javax.swing.JFrame {
                 .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controlsListLayout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bsLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(switchOnBtn)
                         .addGap(75, 75, 75))
                     .addGroup(controlsListLayout.createSequentialGroup()
                         .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(controlsListLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(soLbl))
+                            .addGroup(controlsListLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dnLbl))
+                            .addGroup(controlsListLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dlLbl))
+                            .addGroup(controlsListLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(bLbl))
+                            .addGroup(controlsListLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cpLbl)))
+                        .addContainerGap(291, Short.MAX_VALUE))
                     .addGroup(controlsListLayout.createSequentialGroup()
                         .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(vLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))))
@@ -117,20 +173,33 @@ public class LaptopGUI extends javax.swing.JFrame {
                     .addGroup(controlsListLayout.createSequentialGroup()
                         .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(switchOnBtn))
+                            .addComponent(switchOnBtn)
+                            .addComponent(bsLbl))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3))
+                        .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(vLbl)))
                     .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(bLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cpLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
+                .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(soLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
+                .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(dnLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
+                .addGroup(controlsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(dlLbl))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -189,7 +258,12 @@ public class LaptopGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bLbl;
+    private javax.swing.JLabel bsLbl;
     private javax.swing.JPanel controlsList;
+    private javax.swing.JLabel cpLbl;
+    private javax.swing.JLabel dlLbl;
+    private javax.swing.JLabel dnLbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -199,7 +273,9 @@ public class LaptopGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel laptopScreenPanel;
+    private javax.swing.JLabel soLbl;
     private javax.swing.JButton switchOnBtn;
+    private javax.swing.JLabel vLbl;
     private javax.swing.JSlider volumeSlider;
     // End of variables declaration//GEN-END:variables
 }

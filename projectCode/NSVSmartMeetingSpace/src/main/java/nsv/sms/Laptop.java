@@ -22,6 +22,7 @@ public class Laptop {
         Random random = new Random();
         //generating random number 1-100
         int randomNumber = random.nextInt((100 - 0) + 1) + 0;
+        this.batteryStatus = randomNumber;
         this.brightness = randomNumber;
         this.volume = volume;
         this.swichedOn = switchedOn;

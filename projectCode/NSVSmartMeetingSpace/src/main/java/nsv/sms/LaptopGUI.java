@@ -2,8 +2,14 @@ package nsv.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
 
 /**
  *
@@ -12,13 +18,24 @@ import javax.jmdns.JmDNS;
 public class LaptopGUI extends javax.swing.JFrame {
 
     private static Laptop laptop;
-    private static JmDNS jmDNS;
+    private static JmDNS jmdns;
     private static Gson gson;
     private static int volumeSliderNumber;
     private static Thread t;
     private static boolean e;
-    private static PrintWriter pWriter;
-    private static BufferedReader bReader;
+    private static PrintWriter out;
+    private static BufferedReader in;
+    
+    protected String SERVICE_TYPE;
+    protected String SERVICE_NAME;
+    protected int SERVICE_PORT;
+    protected int my_backlog = 5;
+    protected ServerSocket my_serverSocket;
+    protected Socket socket;
+    protected String status;
+    protected ServiceInfo info;
+    protected final String BAD_COMMAND = "bad Command";
+    protected String STATUS_REQUEST = "get_status";
 
     /**
      * Creates new form LaptopGUI
@@ -232,9 +249,16 @@ public class LaptopGUI extends javax.swing.JFrame {
         e = false;
         volumeSliderNumber = volumeSlider.getValue();
         laptop.setVolume(volumeSliderNumber);
-        pWriter.print(gson.toJson(laptop));
+        out.print(gson.toJson(laptop));
     }//GEN-LAST:event_volumeSliderMouseDragged
 
+    public static int findFreePort() throws IOException {
+        ServerSocket server = new ServerSocket(0);
+        int port = server.getLocalPort();
+        server.close();
+        return port;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -268,8 +292,12 @@ public class LaptopGUI extends javax.swing.JFrame {
                 new LaptopGUI().setVisible(true);
             }
         });
+        
+        
     }
 
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bLbl;
     private javax.swing.JLabel bsLbl;

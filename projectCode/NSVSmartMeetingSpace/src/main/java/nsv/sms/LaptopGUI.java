@@ -13,7 +13,8 @@ import javax.jmdns.ServiceInfo;
 
 /**
  *
- * @author Navjot Virk
+ * @author Navjot Virk The class is done with the help of project example
+ * available on https://moodle.ncirl.ie by NCI.
  */
 public class LaptopGUI extends javax.swing.JFrame {
 
@@ -21,21 +22,19 @@ public class LaptopGUI extends javax.swing.JFrame {
     private static JmDNS jmdns;
     private static Gson gson;
     private static int volumeSliderNumber;
-    private static Thread t;
-    private static boolean e;
     private static PrintWriter out;
     private static BufferedReader in;
-    
-    protected String SERVICE_TYPE;
-    protected String SERVICE_NAME;
-    protected int SERVICE_PORT;
-    protected int my_backlog = 5;
-    protected ServerSocket my_serverSocket;
-    protected Socket socket;
-    protected String status;
-    protected ServiceInfo info;
+
+    protected static String SERVICE_TYPE;
+    protected static String SERVICE_NAME;
+    protected static int SERVICE_PORT;
+    protected static int my_backlog = 5;
+    protected static ServerSocket my_serverSocket;
+    protected static Socket socket;
+    protected static String status;
+    protected static ServiceInfo info;
     protected final String BAD_COMMAND = "bad Command";
-    protected String STATUS_REQUEST = "get_status";
+    protected static String STATUS_REQUEST = "get_status";
 
     /**
      * Creates new form LaptopGUI
@@ -44,7 +43,7 @@ public class LaptopGUI extends javax.swing.JFrame {
         initComponents();
         laptop = new Laptop(20, true);
         gson = new Gson();
-   
+
         dnLbl.setText(laptop.getDeviceName());
         dlLbl.setText(laptop.getDeviceLocation());
         bsLbl.setText(Integer.toString(laptop.getBatteryStatus()));
@@ -85,6 +84,11 @@ public class LaptopGUI extends javax.swing.JFrame {
         dlLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         laptopScreenPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -246,11 +250,20 @@ public class LaptopGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void volumeSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volumeSliderMouseDragged
-        e = false;
         volumeSliderNumber = volumeSlider.getValue();
         laptop.setVolume(volumeSliderNumber);
         out.print(gson.toJson(laptop));
     }//GEN-LAST:event_volumeSliderMouseDragged
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        //unregistering Service on window close
+        jmdns.unregisterService(info);
+        try {
+            my_serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_formWindowClosed
 
     public static int findFreePort() throws IOException {
         ServerSocket server = new ServerSocket(0);
@@ -258,7 +271,7 @@ public class LaptopGUI extends javax.swing.JFrame {
         server.close();
         return port;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -292,12 +305,61 @@ public class LaptopGUI extends javax.swing.JFrame {
                 new LaptopGUI().setVisible(true);
             }
         });
-        
-        
+        SERVICE_NAME = "LaptopService";
+        try {
+            SERVICE_PORT = findFreePort();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        SERVICE_TYPE = "_laptop._udp.local.";
+        try {
+            my_serverSocket = new ServerSocket(SERVICE_PORT, my_backlog);
+        } catch (IOException e) {
+            try {
+                SERVICE_PORT = findFreePort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        try {
+            //creating a JmDNS instance
+            jmdns = JmDNS.create(InetAddress.getLocalHost());
+            info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT, "");
+
+            //registering service
+            jmdns.registerService(info);
+
+            /**
+             * listen the server socket forever and prints each incoming message
+             * to the console.
+             */
+            try {
+                socket = my_serverSocket.accept();
+                out = new PrintWriter(socket.getOutputStream());
+
+                in = new BufferedReader(new InputStreamReader(socket
+                        .getInputStream()));
+
+                String msg = in.readLine();
+                in.close();
+
+                out.println(gson.toJson(laptop));
+                socket.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            } finally {
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bLbl;
     private javax.swing.JLabel bsLbl;

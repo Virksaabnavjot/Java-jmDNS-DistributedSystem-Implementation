@@ -14,7 +14,7 @@ public class LaptopGUI extends javax.swing.JFrame {
     private static Laptop laptop;
     private static JmDNS jmDNS;
     private static Gson gson;
-    private static int n;
+    private static int volumeSliderNumber;
     private static Thread t;
     private static boolean e;
     private static PrintWriter pWriter;
@@ -105,6 +105,12 @@ public class LaptopGUI extends javax.swing.JFrame {
         jLabel8.setText("Device Location:");
 
         switchOnBtn.setText("Switch On");
+
+        volumeSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                volumeSliderMouseDragged(evt);
+            }
+        });
 
         bsLbl.setText("jLabel9");
 
@@ -221,6 +227,13 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void volumeSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volumeSliderMouseDragged
+        e = false;
+        volumeSliderNumber = volumeSlider.getValue();
+        laptop.setVolume(volumeSliderNumber);
+        pWriter.print(gson.toJson(laptop));
+    }//GEN-LAST:event_volumeSliderMouseDragged
 
     /**
      * @param args the command line arguments

@@ -2,14 +2,17 @@ package nsv.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.imageio.ImageIO;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -25,16 +28,17 @@ public class LaptopGUI extends javax.swing.JFrame {
     private static PrintWriter out;
     private static BufferedReader in;
 
-    protected static String SERVICE_TYPE;
-    protected static String SERVICE_NAME;
-    protected static int SERVICE_PORT;
-    protected static int my_backlog = 5;
-    protected static ServerSocket my_serverSocket;
-    protected static Socket socket;
-    protected static String status;
-    protected static ServiceInfo info;
-    protected final String BAD_COMMAND = "bad Command";
-    protected static String STATUS_REQUEST = "get_status";
+    private static String SERVICE_TYPE;
+    private static String SERVICE_NAME;
+    private static int SERVICE_PORT;
+    private static int my_backlog = 5;
+    private static ServerSocket my_serverSocket;
+    private static Socket socket;
+    private static String status;
+    private static ServiceInfo info;
+    private final String BAD_COMMAND = "bad Command";
+    private static String STATUS_REQUEST = "get_status";
+    
 
     /**
      * Creates new form LaptopGUI
@@ -43,7 +47,6 @@ public class LaptopGUI extends javax.swing.JFrame {
         initComponents();
         laptop = new Laptop(20, true);
         gson = new Gson();
-
         dnLbl.setText(laptop.getDeviceName());
         dlLbl.setText(laptop.getDeviceLocation());
         bsLbl.setText(Integer.toString(laptop.getBatteryStatus()));
@@ -65,6 +68,7 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         laptopScreenPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        laptopScreenLbl = new javax.swing.JLabel();
         controlsList = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -94,13 +98,20 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Laptop ");
 
+        laptopScreenLbl.setText("laptop screen");
+
         javax.swing.GroupLayout laptopScreenPanelLayout = new javax.swing.GroupLayout(laptopScreenPanel);
         laptopScreenPanel.setLayout(laptopScreenPanelLayout);
         laptopScreenPanelLayout.setHorizontalGroup(
             laptopScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(laptopScreenPanelLayout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addComponent(jLabel1)
+                .addGroup(laptopScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(laptopScreenPanelLayout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(jLabel1))
+                    .addGroup(laptopScreenPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(laptopScreenLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         laptopScreenPanelLayout.setVerticalGroup(
@@ -108,7 +119,9 @@ public class LaptopGUI extends javax.swing.JFrame {
             .addGroup(laptopScreenPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(laptopScreenLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jLabel2.setText("Battery Status:");
@@ -125,7 +138,25 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         jLabel8.setText("Device Location:");
 
-        switchOnBtn.setText("Switch On");
+        switchOnBtn.setText("Switch On/off");
+        switchOnBtn.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                switchOnBtnStateChanged(evt);
+            }
+        });
+        switchOnBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                switchOnBtnMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                switchOnBtnMouseClicked(evt);
+            }
+        });
+        switchOnBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                switchOnBtnActionPerformed(evt);
+            }
+        });
 
         volumeSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -135,6 +166,7 @@ public class LaptopGUI extends javax.swing.JFrame {
 
         bsLbl.setText("jLabel9");
 
+        vLbl.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         vLbl.setText("jLabel10");
 
         bLbl.setText("jLabel11");
@@ -251,6 +283,7 @@ public class LaptopGUI extends javax.swing.JFrame {
 
     private void volumeSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volumeSliderMouseDragged
         volumeSliderNumber = volumeSlider.getValue();
+        vLbl.setText(Integer.toString(volumeSliderNumber));
         laptop.setVolume(volumeSliderNumber);
         out.print(gson.toJson(laptop));
     }//GEN-LAST:event_volumeSliderMouseDragged
@@ -264,6 +297,35 @@ public class LaptopGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_formWindowClosed
+
+    private void switchOnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchOnBtnActionPerformed
+        boolean switchedOn = true;
+        if (switchedOn == true) {
+            laptopScreenLbl.setText("Laptop is Switched on");
+            laptop.setSwichedOn(true);
+            out.println(gson.toJson(laptop));
+            switchedOn = false;
+        } else if (switchedOn == false){
+            laptopScreenLbl.setText("Laptop is Switched off");
+            laptop.setSwichedOn(false);
+            out.println(gson.toJson(laptop));
+            switchedOn = true;
+        }else{
+            laptopScreenLbl.setText("Need Repair");
+        }
+    }//GEN-LAST:event_switchOnBtnActionPerformed
+
+    private void switchOnBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_switchOnBtnStateChanged
+      
+    }//GEN-LAST:event_switchOnBtnStateChanged
+
+    private void switchOnBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_switchOnBtnMouseClicked
+      
+    }//GEN-LAST:event_switchOnBtnMouseClicked
+
+    private void switchOnBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_switchOnBtnMousePressed
+        
+    }//GEN-LAST:event_switchOnBtnMousePressed
 
     public static int findFreePort() throws IOException {
         ServerSocket server = new ServerSocket(0);
@@ -375,6 +437,7 @@ public class LaptopGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel laptopScreenLbl;
     private javax.swing.JPanel laptopScreenPanel;
     private javax.swing.JLabel soLbl;
     private javax.swing.JButton switchOnBtn;

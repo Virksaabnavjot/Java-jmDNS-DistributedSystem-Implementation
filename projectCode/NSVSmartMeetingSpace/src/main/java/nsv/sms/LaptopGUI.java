@@ -13,10 +13,9 @@ import javax.jmdns.ServiceInfo;
 
 /**
  *
- * @author Navjot Virk 
- * Class description: Laptop device service class with a light weight gui to display information.
- * The class is done with the help of project example
- * available on https://moodle.ncirl.ie by NCI.
+ * @author Navjot Virk Class description: Laptop device service class with a
+ * light weight gui to display information. The class is done with the help of
+ * project example available on https://moodle.ncirl.ie by NCI.
  */
 public class LaptopGUI extends javax.swing.JFrame {
 
@@ -37,7 +36,6 @@ public class LaptopGUI extends javax.swing.JFrame {
     private static ServiceInfo info;
     private final String BAD_COMMAND = "bad Command";
     private static String STATUS_REQUEST = "get_status";
-    
 
     /**
      * Creates new form LaptopGUI
@@ -304,26 +302,26 @@ public class LaptopGUI extends javax.swing.JFrame {
             laptop.setSwichedOn(true);
             out.println(gson.toJson(laptop));
             switchedOn = false;
-        } else if (switchedOn == false){
+        } else if (switchedOn == false) {
             laptopScreenLbl.setText("Laptop is Switched off");
             laptop.setSwichedOn(false);
             out.println(gson.toJson(laptop));
             switchedOn = true;
-        }else{
+        } else {
             laptopScreenLbl.setText("Need Repair");
         }
     }//GEN-LAST:event_switchOnBtnActionPerformed
 
     private void switchOnBtnStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_switchOnBtnStateChanged
-      
+
     }//GEN-LAST:event_switchOnBtnStateChanged
 
     private void switchOnBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_switchOnBtnMouseClicked
-      
+
     }//GEN-LAST:event_switchOnBtnMouseClicked
 
     private void switchOnBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_switchOnBtnMousePressed
-        
+
     }//GEN-LAST:event_switchOnBtnMousePressed
 
     public static int findFreePort() throws IOException {

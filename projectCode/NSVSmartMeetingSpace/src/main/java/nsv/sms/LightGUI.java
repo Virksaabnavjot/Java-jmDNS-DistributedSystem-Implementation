@@ -7,12 +7,16 @@ package nsv.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
+import static nsv.sms.LaptopGUI.findFreePort;
 
 /**
  *
@@ -48,7 +52,12 @@ public class LightGUI extends javax.swing.JFrame {
         //new instance of light device
         light = new Light(20,true, Arrays.asList("Normal","Sunny","Dim","Auto","Dark")); 
         gson = new Gson(); //GSON
-        
+        dnLbl.setText(light.getDeviceName());
+        lLbl.setText(light.getDeviceLocation());
+        pcLbl.setText(light.getPowerConsumption());
+        cmLbl.setText(light.isCurrentMode());
+        bLbl.setText(Integer.toString(light.getBrightness()));
+       
     }
 
     /**
@@ -68,14 +77,14 @@ public class LightGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        switchedOnBtn = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         dnLbl = new javax.swing.JLabel();
         lLbl = new javax.swing.JLabel();
         pcLbl = new javax.swing.JLabel();
         cmLbl = new javax.swing.JLabel();
         bLbl = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        modesComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,7 +102,7 @@ public class LightGUI extends javax.swing.JFrame {
 
         jLabel7.setText("Brightness:");
 
-        jButton1.setText("ON/OFF");
+        switchedOnBtn.setText("ON/OFF");
 
         jLabel8.setText("Modes:");
 
@@ -107,10 +116,10 @@ public class LightGUI extends javax.swing.JFrame {
 
         bLbl.setText("jLabel13");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        modesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        modesComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                modesComboBoxActionPerformed(evt);
             }
         });
 
@@ -157,9 +166,9 @@ public class LightGUI extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(switchedOnBtn)
                         .addGap(59, 59, 59))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -194,8 +203,8 @@ public class LightGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton1))
+                            .addComponent(modesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(switchedOnBtn))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -213,9 +222,9 @@ public class LightGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_modesComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,14 +259,65 @@ public class LightGUI extends javax.swing.JFrame {
                 new LightGUI().setVisible(true);
             }
         });
+        
+        SERVICE_NAME = "LightService";
+        try {
+            SERVICE_PORT = findFreePort();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        SERVICE_TYPE = "_light._udp.local.";
+        try {
+            my_serverSocket = new ServerSocket(SERVICE_PORT, my_backlog);
+        } catch (IOException e) {
+            try {
+                SERVICE_PORT = findFreePort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        try {
+            //creating a JmDNS instance
+            jmdns = JmDNS.create(InetAddress.getLocalHost());
+            info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT, "");
+
+            //registering service
+            jmdns.registerService(info);
+
+            /**
+             * listen the server socket forever and prints each incoming message
+             * to the console.
+             */
+            try {
+                socket = my_serverSocket.accept();
+                out = new PrintWriter(socket.getOutputStream());
+
+                in = new BufferedReader(new InputStreamReader(socket
+                        .getInputStream()));
+
+                String msg = in.readLine();
+                in.close();
+
+                out.println(gson.toJson(light));
+                socket.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            } finally {
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bLbl;
     private javax.swing.JLabel cmLbl;
     private javax.swing.JLabel dnLbl;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -268,6 +328,8 @@ public class LightGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lLbl;
+    private javax.swing.JComboBox<String> modesComboBox;
     private javax.swing.JLabel pcLbl;
+    private javax.swing.JButton switchedOnBtn;
     // End of variables declaration//GEN-END:variables
 }

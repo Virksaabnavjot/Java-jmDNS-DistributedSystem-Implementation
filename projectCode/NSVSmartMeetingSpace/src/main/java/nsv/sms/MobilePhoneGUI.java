@@ -1,5 +1,13 @@
 package nsv.sms;
 
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
+
 /**
  *
  * @author Navjot, created: 1st may 2017, 5:26pm irish time, dublin
@@ -7,11 +15,31 @@ package nsv.sms;
  */
 public class MobilePhoneGUI extends javax.swing.JFrame {
 
+    private static MobilePhone mobile;
+    private static JmDNS jmdns;
+    private static Gson gson;
+    private static int brightnessSliderNumber;
+    private static int volumeSliderNumber;
+    private static PrintWriter out;
+    private static BufferedReader in;
+
+    private static String SERVICE_TYPE;
+    private static String SERVICE_NAME;
+    private static int SERVICE_PORT;
+    private static int my_backlog = 5;
+    private static ServerSocket my_serverSocket;
+    private static Socket socket;
+    private static String status;
+    private static ServiceInfo info;
+    private final String BAD_COMMAND = "bad Command";
+    private static String STATUS_REQUEST = "get_status";
     /**
      * Creates new form MobilePhoneGUI
      */
     public MobilePhoneGUI() {
         initComponents();
+        mobile = new MobilePhone();
+        infoTA.setText(gson.toJson(mobile));
     }
 
     /**
@@ -28,7 +56,7 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTA = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        voumeSlider = new javax.swing.JSlider();
+        volumeSlider = new javax.swing.JSlider();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         brightnessSlider = new javax.swing.JSlider();
@@ -68,9 +96,21 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
+        volumeSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                volumeSliderMouseDragged(evt);
+            }
+        });
+
         jLabel3.setText("Volume");
 
         jLabel4.setText("Brightness");
+
+        brightnessSlider.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                brightnessSliderMouseDragged(evt);
+            }
+        });
 
         vLbl.setText("jLabel2");
 
@@ -86,7 +126,7 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(voumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jLabel3)
@@ -116,7 +156,7 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(vLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(voumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -150,6 +190,23 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void volumeSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volumeSliderMouseDragged
+        volumeSliderNumber = volumeSlider.getValue();
+        vLbl.setText(Integer.toString(volumeSliderNumber));
+        mobile.setVolume(volumeSliderNumber);
+        out.println(gson.toJson(mobile));
+        infoTA.setText("Volume Changed :" +volumeSliderNumber+ "%");
+        infoTA.setText(gson.toJson(mobile));
+    }//GEN-LAST:event_volumeSliderMouseDragged
+
+    private void brightnessSliderMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brightnessSliderMouseDragged
+        brightnessSliderNumber = brightnessSlider.getValue();
+        bLbl.setText(Integer.toString(brightnessSliderNumber));
+        mobile.setBrightness(brightnessSliderNumber);
+        out.println(gson.toJson(mobile));
+        infoTA.setText("Brightness Changed :" +brightnessSliderNumber+ "%");
+    }//GEN-LAST:event_brightnessSliderMouseDragged
 
     /**
      * @param args the command line arguments
@@ -199,6 +256,6 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel vLbl;
-    private javax.swing.JSlider voumeSlider;
+    private javax.swing.JSlider volumeSlider;
     // End of variables declaration//GEN-END:variables
 }

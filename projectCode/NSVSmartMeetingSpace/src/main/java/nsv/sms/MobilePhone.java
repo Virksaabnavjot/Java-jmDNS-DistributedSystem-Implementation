@@ -5,18 +5,32 @@ import java.util.List;
 /**
  *
  * @author Soffyan Ali Class description: This class describes the Mobile Phone
- * and the functionality it supports
+ * and the functionality it supports Edited: 1st may 2017, Navjot singh at 6:46
+ * pm
  */
-
 public class MobilePhone {
 
-    private String deviceName, network;
+    private String deviceName, network, call;
+    /*using string for call all through in this prototype as we are not making 
+    any calls its just demo, in order to avoid parsing at different stages.*/
     private int batteryStatus, brightness, volume;
     private boolean swichedOn, screenLocked, chargerPlugged, onMute;
-    private List<String> call, message;
 
     public MobilePhone() {
+        //default constructor
+    }
 
+    public MobilePhone(String call, int brightness, int volume) {
+        this.deviceName = "Nav's Iphone 5s";
+        this.network = "3 Ireland";
+        this.call = call;
+        this.batteryStatus = 89;
+        this.brightness = brightness;
+        this.volume = volume;
+        this.swichedOn = true;
+        this.screenLocked = true;
+        this.chargerPlugged = true;
+        this.onMute = false;
     }
 
     public String getDeviceName() {
@@ -90,21 +104,4 @@ public class MobilePhone {
     public void setOnMute(boolean onMute) {
         this.onMute = onMute;
     }
-
-    public List<String> getCall() {
-        return call;
-    }
-
-    public void setCall(List<String> call) {
-        this.call = call;
-    }
-
-    public List<String> getMessage() {
-        return message;
-    }
-
-    public void setMessage(List<String> message) {
-        this.message = message;
-    }
-
 }

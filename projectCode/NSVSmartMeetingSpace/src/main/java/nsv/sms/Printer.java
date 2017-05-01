@@ -5,6 +5,7 @@ package nsv.sms;
  * @author Navjot Singh 
  * Class description: This class describes the printer
  * device and the functionality it supports
+ * edited: 1st may 2017 added custom constructor, 7:14 pm
  */
 public class Printer {
 
@@ -13,7 +14,19 @@ public class Printer {
     private boolean swichedOn, paper, printing;
 
     public Printer() {
-
+        //default constructor
+    }
+    
+    public Printer(String documentName, int noOfCopies){
+        //custom constructor
+        this.deviceName = "GymandNutrition.com's Printer";
+        this.deviceLocation = "Admin's Office";
+        this.documentName = documentName;
+        this.inkLevel = 56;
+        this.noOfCopies = noOfCopies;
+        this.swichedOn = true;
+        this.paper = true;
+        this.printing = false;
     }
 
     public String getDeviceName() {

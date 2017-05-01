@@ -283,7 +283,7 @@ public class LaptopGUI extends javax.swing.JFrame {
         volumeSliderNumber = volumeSlider.getValue();
         vLbl.setText(Integer.toString(volumeSliderNumber));
         laptop.setVolume(volumeSliderNumber);
-        out.print(gson.toJson(laptop));
+        out.println(gson.toJson(laptop));
     }//GEN-LAST:event_volumeSliderMouseDragged
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

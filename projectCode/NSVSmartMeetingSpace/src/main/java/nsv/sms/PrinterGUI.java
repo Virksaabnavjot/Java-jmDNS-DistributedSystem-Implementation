@@ -1,17 +1,51 @@
 package nsv.sms;
 
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.List;
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
+import javax.swing.JOptionPane;
+import static nsv.sms.reusable.FreePort.findFreePort;
+
 /**
  *
  * @author Navjot, created 1 st may, 7:06 pm
- * File description: Printer device service file with light UI
+ * File description: Printer device service file with lightweight UI
  */
 public class PrinterGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PrinterGUI
-     */
+    private static Printer printer;
+    private static JmDNS jmdns;
+    private static Gson gson;
+    private static PrintWriter out;
+    private static BufferedReader in;
+
+    private static String SERVICE_TYPE;
+    private static String SERVICE_NAME;
+    private static int SERVICE_PORT;
+    private static int my_backlog = 5;
+    private static ServerSocket my_serverSocket;
+    private static Socket socket;
+    private static String status;
+    private static ServiceInfo info;
+    private final String BAD_COMMAND = "bad Command";
+    private static String STATUS_REQUEST = "get_status";
+    
+    
     public PrinterGUI() {
         initComponents();
+        printer = new Printer("NavjotSinghResume.pdf", 2); //new printer instance
+        dnLbl.setText(printer.getDeviceName());
+        lLbl.setText(printer.getDeviceLocation());
+        ilLbl.setText(""+printer.getInkLevel()+ "%");
+        gson = new Gson();
     }
 
     /**
@@ -23,21 +57,144 @@ public class PrinterGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        infoLbl = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        dnLbl = new javax.swing.JLabel();
+        ilLbl = new javax.swing.JLabel();
+        lLbl = new javax.swing.JLabel();
+        nofTF = new javax.swing.JTextField();
+        dnTF = new javax.swing.JTextField();
+        printBtn = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Printer");
+
+        infoLbl.setText("info desplayed here");
+
+        jLabel2.setText("Device Name: ");
+
+        jLabel3.setText("Ink Levels: ");
+
+        jLabel4.setText("Location: ");
+
+        jLabel5.setText("Document Name: ");
+
+        jLabel6.setText("No. of Copies: ");
+
+        dnLbl.setText("jLabel7");
+
+        ilLbl.setText("jLabel8");
+
+        lLbl.setText("jLabel9");
+
+        nofTF.setText("enter number of copies ");
+
+        dnTF.setText("enter document name");
+
+        printBtn.setText("Print");
+        printBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lLbl)
+                                    .addComponent(ilLbl)
+                                    .addComponent(dnLbl)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dnTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(nofTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(printBtn)))))
+                        .addGap(34, 34, 34))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(infoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(infoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(dnLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(ilLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(dnTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(nofTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(printBtn))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void printBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBtnActionPerformed
+        String docName = dnTF.getText();
+        int copies = Integer.parseInt(nofTF.getText());
+        printer.setNoOfCopies(copies);
+        printer.setDocumentName(docName);
+        out.println(gson.toJson(printer));
+        
+        JOptionPane.showMessageDialog(null,"Printing \n" +docName+ "/n No. of Copies: \n " +copies);
+    }//GEN-LAST:event_printBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -72,8 +229,75 @@ public class PrinterGUI extends javax.swing.JFrame {
                 new PrinterGUI().setVisible(true);
             }
         });
+        
+        SERVICE_NAME = "PrinterService";
+        try {
+            SERVICE_PORT = findFreePort();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        SERVICE_TYPE = "_printer._udp.local.";
+        try {
+            my_serverSocket = new ServerSocket(SERVICE_PORT, my_backlog);
+        } catch (IOException e) {
+            try {
+                SERVICE_PORT = findFreePort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        try {
+            //creating a JmDNS instance
+            jmdns = JmDNS.create(InetAddress.getLocalHost());
+            info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT, "");
+
+            //registering service
+            jmdns.registerService(info);
+
+            /**
+             * listen the server socket forever and prints each incoming message
+             * to the console.
+             */
+            try {
+                socket = my_serverSocket.accept();
+                out = new PrintWriter(socket.getOutputStream());
+
+                in = new BufferedReader(new InputStreamReader(socket
+                        .getInputStream()));
+
+                String msg = in.readLine();
+                in.close();
+
+                out.println(gson.toJson(printer));
+                socket.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            } finally {
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dnLbl;
+    private javax.swing.JTextField dnTF;
+    private javax.swing.JLabel ilLbl;
+    private javax.swing.JLabel infoLbl;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lLbl;
+    private javax.swing.JTextField nofTF;
+    private javax.swing.JButton printBtn;
     // End of variables declaration//GEN-END:variables
 }

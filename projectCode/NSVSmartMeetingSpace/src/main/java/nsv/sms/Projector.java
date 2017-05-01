@@ -12,9 +12,20 @@ public class Projector {
     private String deviceName, deviceLocation, resolution, currentlyProjectedFile;
     private boolean switchedOn;
     private List<String> connectionType;
+    private String currentConnectionType;
 
     public Projector() {
     
+    }
+    
+    public Projector(List<String> connectionType, String currentConnectionType){
+        this.deviceName = "Projector";
+        this.deviceLocation = "SCR2";
+        this.resolution = "1024px";
+        this.currentlyProjectedFile = "Myfile.docx";
+        this.switchedOn = true;
+        this.connectionType = connectionType; 
+        this.currentConnectionType = currentConnectionType;
     }
 
     public String getDeviceName() {
@@ -65,4 +76,11 @@ public class Projector {
         this.connectionType = connectionType;
     }
 
+    public String getCurrentConnectionType() {
+        return currentConnectionType;
+    }
+
+    public void setCurrentConnectionType(String currentConnectionType) {
+        this.currentConnectionType = currentConnectionType;
+    }
 }

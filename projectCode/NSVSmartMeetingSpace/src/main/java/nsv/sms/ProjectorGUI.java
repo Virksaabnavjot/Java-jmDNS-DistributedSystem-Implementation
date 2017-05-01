@@ -1,21 +1,56 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nsv.sms;
+
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
+import static nsv.sms.reusable.FreePort.findFreePort;
 
 /**
  *
- * @author navNav
+ * @author Navjot virk
+ * Class description: This is projector service class with lightweight UI/GUI.
  */
 public class ProjectorGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ProjectorGUI
-     */
+    private static Projector projector;
+    private static JmDNS jmdns;
+    private static Gson gson;
+    private static int volumeSliderNumber;
+    private static PrintWriter out;
+    private static BufferedReader in;
+
+    private static String SERVICE_TYPE;
+    private static String SERVICE_NAME;
+    private static int SERVICE_PORT;
+    private static int my_backlog = 5;
+    private static ServerSocket my_serverSocket;
+    private static Socket socket;
+    private static String status;
+    private static ServiceInfo info;
+    private final String BAD_COMMAND = "bad Command";
+    private static String STATUS_REQUEST = "get_status";
+    private static List<String> list;
+    
     public ProjectorGUI() {
         initComponents();
+        projector = new Projector(Arrays.asList("VDA","HDMI","USB A/B Cable", "Other"), "HDMI");
+        gson = new Gson();
+        dnLbl.setText(projector.getDeviceName());
+        lLbl.setText(projector.getDeviceLocation());
+        ctLbl.setText("Default: HDMI");
+        list = projector.getConnectionType();
+        //setting the light modes in combobox
+        connectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(list.toArray()));
+        out.println(gson.toJson(projector));
     }
 
     /**
@@ -27,21 +62,116 @@ public class ProjectorGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        dnLbl = new javax.swing.JLabel();
+        lLbl = new javax.swing.JLabel();
+        ctLbl = new javax.swing.JLabel();
+        connectionComboBox = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Projector");
+
+        jLabel2.setText("Projector Info");
+
+        jLabel3.setText("Name: ");
+
+        jLabel4.setText("Location: ");
+
+        jLabel5.setText("Connection Type: ");
+
+        dnLbl.setText("jLabel6");
+
+        lLbl.setText("jLabel7");
+
+        ctLbl.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        ctLbl.setText("jLabel8");
+
+        connectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        connectionComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                connectionComboBoxMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lLbl))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dnLbl))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ctLbl))
+                            .addComponent(connectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 200, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(dnLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(ctLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(connectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void connectionComboBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_connectionComboBoxMousePressed
+        String connectionType = connectionComboBox.getSelectedItem().toString();
+        ctLbl.setText(connectionType);
+        projector.setCurrentConnectionType(connectionType);
+        out.println(gson.toJson(projector));
+    }//GEN-LAST:event_connectionComboBoxMousePressed
 
     /**
      * @param args the command line arguments
@@ -76,8 +206,71 @@ public class ProjectorGUI extends javax.swing.JFrame {
                 new ProjectorGUI().setVisible(true);
             }
         });
+        
+        SERVICE_NAME = "ProjectorService";
+        try {
+            SERVICE_PORT = findFreePort();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        SERVICE_TYPE = "_projector._udp.local.";
+        try {
+            my_serverSocket = new ServerSocket(SERVICE_PORT, my_backlog);
+        } catch (IOException e) {
+            try {
+                SERVICE_PORT = findFreePort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        try {
+            //creating a JmDNS instance
+            jmdns = JmDNS.create(InetAddress.getLocalHost());
+            info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT, "");
+
+            //registering service
+            jmdns.registerService(info);
+
+            /**
+             * listen the server socket forever and prints each incoming message
+             * to the console.
+             */
+            try {
+                socket = my_serverSocket.accept();
+                out = new PrintWriter(socket.getOutputStream());
+
+                in = new BufferedReader(new InputStreamReader(socket
+                        .getInputStream()));
+
+                String msg = in.readLine();
+                in.close();
+
+                out.println(gson.toJson(projector));
+                socket.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            } finally {
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> connectionComboBox;
+    private javax.swing.JLabel ctLbl;
+    private javax.swing.JLabel dnLbl;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lLbl;
     // End of variables declaration//GEN-END:variables
 }

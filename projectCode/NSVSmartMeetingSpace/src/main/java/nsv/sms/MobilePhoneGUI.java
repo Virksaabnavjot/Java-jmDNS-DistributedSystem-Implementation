@@ -2,11 +2,15 @@ package nsv.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
+import static nsv.sms.reusable.FreePort.findFreePort;
 
 /**
  *
@@ -38,7 +42,7 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
      */
     public MobilePhoneGUI() {
         initComponents();
-        mobile = new MobilePhone();
+        mobile = new MobilePhone("0892110123", 20, 20);
         infoTA.setText(gson.toJson(mobile));
     }
 
@@ -241,6 +245,58 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
                 new MobilePhoneGUI().setVisible(true);
             }
         });
+        SERVICE_NAME = "MobileService";
+        try {
+            SERVICE_PORT = findFreePort();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+        SERVICE_TYPE = "_mobile._udp.local.";
+        try {
+            my_serverSocket = new ServerSocket(SERVICE_PORT, my_backlog);
+        } catch (IOException e) {
+            try {
+                SERVICE_PORT = findFreePort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        try {
+            //creating a JmDNS instance
+            jmdns = JmDNS.create(InetAddress.getLocalHost());
+            info = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME, SERVICE_PORT, "");
+
+            //registering service
+            jmdns.registerService(info);
+
+            /**
+             * listen the server socket forever and prints each incoming message
+             * to the console.
+             */
+            try {
+                socket = my_serverSocket.accept();
+                out = new PrintWriter(socket.getOutputStream());
+
+                in = new BufferedReader(new InputStreamReader(socket
+                        .getInputStream()));
+
+                String msg = in.readLine();
+                in.close();
+
+                out.println(gson.toJson(mobile));
+                socket.close();
+
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            } finally {
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

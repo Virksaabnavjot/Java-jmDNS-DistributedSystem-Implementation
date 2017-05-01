@@ -16,7 +16,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-import static nsv.sms.LaptopGUI.findFreePort;
+import static nsv.sms.reusable.FreePort.findFreePort;
 
 /**
  *

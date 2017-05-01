@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
+import static nsv.sms.reusable.FreePort.findFreePort;
 
 /**
  *
@@ -323,13 +324,6 @@ public class LaptopGUI extends javax.swing.JFrame {
     private void switchOnBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_switchOnBtnMousePressed
 
     }//GEN-LAST:event_switchOnBtnMousePressed
-
-    public static int findFreePort() throws IOException {
-        ServerSocket server = new ServerSocket(0);
-        int port = server.getLocalPort();
-        server.close();
-        return port;
-    }
 
     /**
      * @param args the command line arguments

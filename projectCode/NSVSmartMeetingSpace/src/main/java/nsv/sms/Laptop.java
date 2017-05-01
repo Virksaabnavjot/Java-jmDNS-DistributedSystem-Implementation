@@ -1,5 +1,7 @@
 package nsv.sms;
 
+//Packge name: nsv.sms here sms is smart meeting space
+
 import java.util.Random;
 
 /**

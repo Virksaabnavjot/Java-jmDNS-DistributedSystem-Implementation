@@ -13,9 +13,12 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
+import javax.swing.JComboBox;
 import static nsv.sms.reusable.FreePort.findFreePort;
 
 /**
@@ -223,7 +226,10 @@ public class LightGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-        // TODO add your handling code here:
+        List<String> list = new ArrayList<String>();
+        list = light.getModes();
+        String modes [] = list.toArray(new String[0]);
+        modesComboBox = new JComboBox(modes);
     }//GEN-LAST:event_modesComboBoxActionPerformed
 
     /**

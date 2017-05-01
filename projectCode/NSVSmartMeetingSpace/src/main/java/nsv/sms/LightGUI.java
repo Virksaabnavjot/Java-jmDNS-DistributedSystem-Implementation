@@ -46,6 +46,7 @@ public class LightGUI extends javax.swing.JFrame {
     private static ServiceInfo info;
     private final String BAD_COMMAND = "bad Command";
     private static String STATUS_REQUEST = "get_status";
+    private static List<String> list;
     
     /**
      * Creates new form LightGUI
@@ -60,7 +61,12 @@ public class LightGUI extends javax.swing.JFrame {
         pcLbl.setText(light.getPowerConsumption());
         cmLbl.setText(light.isCurrentMode());
         bLbl.setText(Integer.toString(light.getBrightness()));
-       
+        list = light.getModes();
+        //setting the light modes in combobox
+        modesComboBox.setModel(new javax.swing.DefaultComboBoxModel(list.toArray()));
+        //references: JComboBoxes - Using setModel to access Objects (in Swing)
+        //http://stackoverflow.com/questions/3926543/jcomboboxes-using-setmodel-to-access-objects-in-swing
+        //http://www.codejava.net/java-se/swing/jcombobox-basic-tutorial-and-examples
     }
 
     /**
@@ -71,6 +77,7 @@ public class LightGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -120,6 +127,10 @@ public class LightGUI extends javax.swing.JFrame {
         bLbl.setText("jLabel13");
 
         modesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, modesComboBox, org.jdesktop.beansbinding.ObjectProperty.create(), modesComboBox, org.jdesktop.beansbinding.BeanProperty.create("elements"));
+        bindingGroup.addBinding(binding);
+
         modesComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modesComboBoxActionPerformed(evt);
@@ -222,14 +233,14 @@ public class LightGUI extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void modesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modesComboBoxActionPerformed
-        List<String> list = new ArrayList<String>();
-        list = light.getModes();
-        String modes [] = list.toArray(new String[0]);
-        modesComboBox = new JComboBox(modes);
+        
+        
     }//GEN-LAST:event_modesComboBoxActionPerformed
 
     /**
@@ -337,5 +348,6 @@ public class LightGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> modesComboBox;
     private javax.swing.JLabel pcLbl;
     private javax.swing.JButton switchedOnBtn;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

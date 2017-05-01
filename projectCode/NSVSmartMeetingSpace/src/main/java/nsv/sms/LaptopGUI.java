@@ -2,21 +2,20 @@ package nsv.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import javax.imageio.ImageIO;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-import javax.swing.ImageIcon;
 
 /**
  *
- * @author Navjot Virk The class is done with the help of project example
+ * @author Navjot Virk 
+ * Class description: Laptop device service class with a light weight gui to display information.
+ * The class is done with the help of project example
  * available on https://moodle.ncirl.ie by NCI.
  */
 public class LaptopGUI extends javax.swing.JFrame {

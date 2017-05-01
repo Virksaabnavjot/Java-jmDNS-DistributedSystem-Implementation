@@ -14,7 +14,7 @@ public class Projector {
     private List<String> connectionType;
 
     public Projector() {
-
+    
     }
 
     public String getDeviceName() {

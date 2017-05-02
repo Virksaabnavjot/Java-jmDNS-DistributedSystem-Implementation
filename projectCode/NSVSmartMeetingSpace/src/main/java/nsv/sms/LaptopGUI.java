@@ -396,6 +396,7 @@ public class LaptopGUI extends javax.swing.JFrame {
 
                 String msg = in.readLine();
                 in.close();
+                System.out.println("Received msg= "+msg);
 
                 out.println(gson.toJson(laptop));
                 socket.close();

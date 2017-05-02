@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package nsv.sms;
 
 import com.google.gson.Gson;
@@ -14,11 +10,15 @@ import javax.jmdns.JmDNS;
 
 /**
  *
- * @author navNav
+ * @author Soffyan Ali
  */
 public class ClientManager extends javax.swing.JFrame {
 
     private static Laptop laptop;
+    private static Light light;
+    private static MobilePhone mobilephone;
+    private static Printer printer;
+    private static Projector projector;
     private static Gson gson;
     private static JmDNS jmdns;
     private static PrintWriter out;

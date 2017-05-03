@@ -88,6 +88,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="text" type="java.lang.String" value="Mobile Switched on"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -181,12 +182,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="vLbl">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel2"/>
+            <Property name="text" type="java.lang.String" value="52"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="bLbl">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel5"/>
+            <Property name="text" type="java.lang.String" value="50"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">

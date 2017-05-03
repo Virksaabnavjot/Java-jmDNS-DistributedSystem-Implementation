@@ -11,7 +11,9 @@ import javax.jmdns.JmDNS;
 
 /**
  *
- * @author Soffyan Ali
+ * @author Navjot Singh (Ali avoid changing the author names of the files created by me instead use the example 
+ * below if you are working or editing the file.Thanks
+ * Edited by: Your name, Date and Time
  */
 public class ClientManager extends javax.swing.JFrame {
 

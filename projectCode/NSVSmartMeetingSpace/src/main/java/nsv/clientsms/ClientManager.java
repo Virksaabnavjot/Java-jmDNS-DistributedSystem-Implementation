@@ -8,6 +8,7 @@ package nsv.clientsms;
 
 import com.google.gson.Gson;
 import java.awt.Panel;
+import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -75,7 +76,7 @@ public class ClientManager extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         LightPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        lightTogbutton = new javax.swing.JToggleButton();
         PrinterPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -232,7 +233,17 @@ public class ClientManager extends javax.swing.JFrame {
 
         jLabel5.setText("Light Panel");
 
-        jToggleButton1.setText("ON/OFF");
+        lightTogbutton.setText("ON/OFF");
+        lightTogbutton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                lightTogbuttonItemStateChanged(evt);
+            }
+        });
+        lightTogbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lightTogbuttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout LightPanelLayout = new javax.swing.GroupLayout(LightPanel);
         LightPanel.setLayout(LightPanelLayout);
@@ -242,7 +253,7 @@ public class ClientManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(LightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jToggleButton1))
+                    .addComponent(lightTogbutton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         LightPanelLayout.setVerticalGroup(
@@ -250,7 +261,7 @@ public class ClientManager extends javax.swing.JFrame {
             .addGroup(LightPanelLayout.createSequentialGroup()
                 .addComponent(jLabel5)
                 .addGap(32, 32, 32)
-                .addComponent(jToggleButton1)
+                .addComponent(lightTogbutton)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -464,15 +475,41 @@ public class ClientManager extends javax.swing.JFrame {
 
     private void VolumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_VolumeSliderStateChanged
         // TODO add your handling code here:
-        infoLbl.setText("Mobile Volumn value= "+String.valueOf(laptopVolumeSlider.getValue()));
+        infoLbl.setText("Mobile Volumn value= "+String.valueOf(VolumeSlider.getValue()));
         try {
             mobile.setVolume(laptopVolumeSlider.getValue());
             socket = servicePorts.get("MobileService");      
             out = new PrintWriter(socket.getOutputStream(), true);
-            out.println(gson.toJson(laptop));
+            out.println(gson.toJson(mobile));
         } catch (Exception e) {
         }  
     }//GEN-LAST:event_VolumeSliderStateChanged
+
+    private void lightTogbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lightTogbuttonActionPerformed
+        // TODO add your handling code here:
+      
+    }//GEN-LAST:event_lightTogbuttonActionPerformed
+
+    private void lightTogbuttonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lightTogbuttonItemStateChanged
+        // TODO add your handling code here:
+        boolean flag=false;
+        if(evt.getStateChange()==ItemEvent.SELECTED){
+        System.out.println("Light is ON");
+        flag=true;
+      } else if(evt.getStateChange()==ItemEvent.DESELECTED){
+        System.out.println("Light is OFF");
+        flag=false;
+      }
+        
+     try {
+            light.setSwichedOn(flag);
+            socket = servicePorts.get("LightService");      
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(gson.toJson(light));
+        } catch (Exception e) {
+        }  
+   
+    }//GEN-LAST:event_lightTogbuttonItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -531,12 +568,12 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JButton laptopBtn;
     private javax.swing.JPanel laptopPanel;
     private javax.swing.JSlider laptopVolumeSlider;
     private javax.swing.JButton lightBtn;
+    private javax.swing.JToggleButton lightTogbutton;
     private javax.swing.JButton mobilePhoneBtn;
     private javax.swing.JButton printerBtn;
     private javax.swing.JButton projectorBtn;

@@ -84,7 +84,7 @@ Team work breakdown:
 
 Soffyan ali: 
 
-50% final report, ….. ali mention your work here 
+50% final report, Project planning, contribution in serverices, error handling, ClientManagerGUI functionalities, testing the communication between client and services.
 
 ***********
 ***********
@@ -92,5 +92,7 @@ Work done by Soffyan
 ***********
 
 Created - MobilePhone.java 
+
+Created - ClientMangers GUI's panels and code
 
 

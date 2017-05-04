@@ -75,7 +75,6 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
 
         infoTA.setColumns(20);
         infoTA.setRows(5);
-        infoTA.setText("Mobile Switched on");
         jScrollPane1.setViewportView(infoTA);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -117,9 +116,9 @@ public class MobilePhoneGUI extends javax.swing.JFrame {
             }
         });
 
-        vLbl.setText("52");
+        vLbl.setText("jLabel2");
 
-        bLbl.setText("50");
+        bLbl.setText("jLabel5");
 
         jLabel6.setText("Call");
 

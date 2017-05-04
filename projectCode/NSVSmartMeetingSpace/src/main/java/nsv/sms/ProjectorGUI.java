@@ -77,7 +77,7 @@ public class ProjectorGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Projector");
 
-        jLabel2.setText("Projector Info here");
+        jLabel2.setText("Projector Info");
 
         jLabel3.setText("Name: ");
 
@@ -85,12 +85,12 @@ public class ProjectorGUI extends javax.swing.JFrame {
 
         jLabel5.setText("Connection Type: ");
 
-        dnLbl.setText("Projector");
+        dnLbl.setText("jLabel6");
 
-        lLbl.setText("SCR1");
+        lLbl.setText("jLabel7");
 
         ctLbl.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        ctLbl.setText("HDMI");
+        ctLbl.setText("jLabel8");
 
         connectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         connectionComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -123,7 +123,7 @@ public class ProjectorGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ctLbl))
                             .addComponent(connectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 218, Short.MAX_VALUE)))
+                        .addGap(0, 200, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(

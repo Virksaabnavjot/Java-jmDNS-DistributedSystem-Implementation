@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
 import javax.jmdns.JmDNS;
+import javax.swing.JOptionPane;
 import nsv.sms.Laptop;
 import nsv.sms.*;
 
@@ -461,6 +462,7 @@ public class ClientManager extends javax.swing.JFrame {
              socket = servicePorts.get("LaptopService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(laptop));
+            JOptionPane.showMessageDialog(this, "Brightness value changed");
         } catch (Exception e) {
         }        
     }//GEN-LAST:event_laptopBrightnessSliderStateChanged
@@ -513,6 +515,8 @@ public class ClientManager extends javax.swing.JFrame {
             socket = servicePorts.get("MobileService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(mobile));
+            JOptionPane.showMessageDialog(this, "Volumn value changed");
+
         } catch (Exception e) {
         }  
     }//GEN-LAST:event_VolumeSliderStateChanged
@@ -538,6 +542,8 @@ public class ClientManager extends javax.swing.JFrame {
             socket = servicePorts.get("LightService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(light));
+            JOptionPane.showMessageDialog(this, "Light value send ");
+
         } catch (Exception e) {
         }  
    
@@ -568,6 +574,7 @@ public class ClientManager extends javax.swing.JFrame {
             socket = servicePorts.get("ProjectorService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(projector));
+            JOptionPane.showMessageDialog(this, "Projector value send ");
         } catch (Exception e) {
     }  
      
@@ -578,9 +585,10 @@ public class ClientManager extends javax.swing.JFrame {
         infoLbl.setText("Document name= "+documentTxt.getText());
         try {
             projector.setCurrentlyProjectedFile(documentTxt.getText());
-            socket = servicePorts.get("ProjectorService");      
+            socket = servicePorts.get("PrinterService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(projector));
+            JOptionPane.showMessageDialog(this, "Printer value send ");
         } catch (Exception e) {
         }  
 

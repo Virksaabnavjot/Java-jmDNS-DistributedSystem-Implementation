@@ -72,7 +72,7 @@ public class ClientManager extends javax.swing.JFrame {
         projectorBtn = new javax.swing.JButton();
         laptopPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        laptopVolumeSlider = new javax.swing.JSlider();
+        laptopBrightnessSlider = new javax.swing.JSlider();
         jLabel11 = new javax.swing.JLabel();
         LightPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -198,9 +198,9 @@ public class ClientManager extends javax.swing.JFrame {
 
         jLabel4.setText("Laptop Panel");
 
-        laptopVolumeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+        laptopBrightnessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                laptopVolumeSliderStateChanged(evt);
+                laptopBrightnessSliderStateChanged(evt);
             }
         });
 
@@ -214,7 +214,7 @@ public class ClientManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(laptopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(laptopVolumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(laptopBrightnessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
@@ -225,7 +225,7 @@ public class ClientManager extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(laptopVolumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(laptopBrightnessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -417,25 +417,28 @@ public class ClientManager extends javax.swing.JFrame {
                     .addComponent(laptopPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(LightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(MobilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(75, 75, 75)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deviceListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(deviceListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(laptopPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(LightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PrinterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ProjectorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(MobilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(laptopPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(LightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PrinterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ProjectorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(MobilePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(deviceListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -450,17 +453,17 @@ public class ClientManager extends javax.swing.JFrame {
         LightPanel.setVisible(false);
     }//GEN-LAST:event_laptopBtnActionPerformed
 
-    private void laptopVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_laptopVolumeSliderStateChanged
-        infoLbl.setText("Brightness value= "+String.valueOf(laptopVolumeSlider.getValue()));
+    private void laptopBrightnessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_laptopBrightnessSliderStateChanged
+        infoLbl.setText("Brightness value= "+String.valueOf(laptopBrightnessSlider.getValue()));
          
        try {
-             laptop.setBrightness(laptopVolumeSlider.getValue());
+             laptop.setBrightness(laptopBrightnessSlider.getValue());
              socket = servicePorts.get("LaptopService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(laptop));
         } catch (Exception e) {
         }        
-    }//GEN-LAST:event_laptopVolumeSliderStateChanged
+    }//GEN-LAST:event_laptopBrightnessSliderStateChanged
 
     private void lightBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lightBtnActionPerformed
 
@@ -506,7 +509,7 @@ public class ClientManager extends javax.swing.JFrame {
         // TODO add your handling code here:
         infoLbl.setText("Mobile Volumn value= "+String.valueOf(VolumeSlider.getValue()));
         try {
-            mobile.setVolume(laptopVolumeSlider.getValue());
+            mobile.setVolume(laptopBrightnessSlider.getValue());
             socket = servicePorts.get("MobileService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(mobile));
@@ -640,9 +643,9 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider laptopBrightnessSlider;
     private javax.swing.JButton laptopBtn;
     private javax.swing.JPanel laptopPanel;
-    private javax.swing.JSlider laptopVolumeSlider;
     private javax.swing.JButton lightBtn;
     private javax.swing.JToggleButton lightTogbutton;
     private javax.swing.JButton mobilePhoneBtn;

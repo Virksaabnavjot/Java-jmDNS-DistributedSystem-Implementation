@@ -342,7 +342,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="dnTF" min="-2" max="-2" attributes="0"/>
+                          <Component id="documentTxt" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -355,6 +355,11 @@
                       </Group>
                   </Group>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                  <Component id="projectorbutton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -365,7 +370,9 @@
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="dnTF" min="-2" max="-2" attributes="0"/>
+                  <Component id="documentTxt" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="projectorbutton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -382,10 +389,18 @@
             <Property name="text" type="java.lang.String" value="Document Name: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="dnTF">
+        <Component class="javax.swing.JTextField" name="documentTxt">
           <Properties>
             <Property name="text" type="java.lang.String" value="enter document name"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="projectorbutton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Click Here"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="projectorbuttonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

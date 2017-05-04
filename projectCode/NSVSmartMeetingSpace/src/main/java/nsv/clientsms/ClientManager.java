@@ -80,7 +80,8 @@ public class ClientManager extends javax.swing.JFrame {
         PrinterPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        dnTF = new javax.swing.JTextField();
+        documentTxt = new javax.swing.JTextField();
+        projectorbutton = new javax.swing.JButton();
         ProjectorPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         projectorToggle = new javax.swing.JToggleButton();
@@ -271,7 +272,14 @@ public class ClientManager extends javax.swing.JFrame {
 
         jLabel9.setText("Document Name: ");
 
-        dnTF.setText("enter document name");
+        documentTxt.setText("enter document name");
+
+        projectorbutton.setText("Click Here");
+        projectorbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projectorbuttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PrinterPanelLayout = new javax.swing.GroupLayout(PrinterPanel);
         PrinterPanel.setLayout(PrinterPanelLayout);
@@ -281,7 +289,7 @@ public class ClientManager extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PrinterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PrinterPanelLayout.createSequentialGroup()
-                        .addComponent(dnTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(documentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(PrinterPanelLayout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -289,6 +297,10 @@ public class ClientManager extends javax.swing.JFrame {
                     .addGroup(PrinterPanelLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(PrinterPanelLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(projectorbutton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         PrinterPanelLayout.setVerticalGroup(
             PrinterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +310,9 @@ public class ClientManager extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
-                .addComponent(dnTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(documentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(projectorbutton)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -539,10 +553,10 @@ public class ClientManager extends javax.swing.JFrame {
         // TODO add your handling code here:
      boolean flag=false;
         if(evt.getStateChange()==ItemEvent.SELECTED){
-        infoLbl.setText("Light is ON");
+        infoLbl.setText("Projector is ON");
         flag=true;
       } else if(evt.getStateChange()==ItemEvent.DESELECTED){
-        infoLbl.setText("Light is OFF");
+        infoLbl.setText("Projector is OFF");
         flag=false;
       }
         
@@ -552,9 +566,22 @@ public class ClientManager extends javax.swing.JFrame {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(projector));
         } catch (Exception e) {
-        }  
-   
+    }  
+     
     }//GEN-LAST:event_projectorToggleItemStateChanged
+
+    private void projectorbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectorbuttonActionPerformed
+        // TODO add your handling code here:
+        infoLbl.setText("Document name= "+documentTxt.getText());
+        try {
+            projector.setCurrentlyProjectedFile(documentTxt.getText());
+            socket = servicePorts.get("ProjectorService");      
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(gson.toJson(projector));
+        } catch (Exception e) {
+        }  
+
+    }//GEN-LAST:event_projectorbuttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -599,7 +626,7 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JPanel ProjectorPanel;
     private javax.swing.JSlider VolumeSlider;
     private javax.swing.JPanel deviceListPanel;
-    private javax.swing.JTextField dnTF;
+    private javax.swing.JTextField documentTxt;
     private javax.swing.JTextArea infoLbl;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JLabel jLabel1;
@@ -622,5 +649,6 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JButton printerBtn;
     private javax.swing.JButton projectorBtn;
     private javax.swing.JToggleButton projectorToggle;
+    private javax.swing.JButton projectorbutton;
     // End of variables declaration//GEN-END:variables
 }

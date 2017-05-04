@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import javax.jmdns.JmDNS;
 import nsv.sms.Laptop;
+import nsv.sms.*;
 
 /**
  *
@@ -22,6 +23,11 @@ import nsv.sms.Laptop;
 public class ClientManager extends javax.swing.JFrame {
 
     private static Laptop laptop;
+    private static MobilePhone mobile;
+    private static Light light;
+    private static Printer printer;
+    private static Projector projector;
+
     private static Gson gson;
     private static JmDNS jmdns;
     private static PrintWriter out;
@@ -322,6 +328,12 @@ public class ClientManager extends javax.swing.JFrame {
 
         jLabel7.setText("Mobile");
 
+        VolumeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                VolumeSliderStateChanged(evt);
+            }
+        });
+
         jLabel3.setText("Volume");
 
         javax.swing.GroupLayout MobilePanelLayout = new javax.swing.GroupLayout(MobilePanel);
@@ -400,10 +412,10 @@ public class ClientManager extends javax.swing.JFrame {
 
     private void laptopVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_laptopVolumeSliderStateChanged
         infoLbl.setText("Brightness value= "+String.valueOf(laptopVolumeSlider.getValue()));
-        laptop.setVolume(laptopVolumeSlider.getValue());
-        socket = servicePorts.get("LaptopService");
-        
-        try {
+         
+       try {
+             laptop.setBrightness(laptopVolumeSlider.getValue());
+             socket = servicePorts.get("LaptopService");      
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println(gson.toJson(laptop));
         } catch (Exception e) {
@@ -449,6 +461,18 @@ public class ClientManager extends javax.swing.JFrame {
         laptopPanel.setVisible(false);  
         LightPanel.setVisible(false);        // TODO add your handling code here:
     }//GEN-LAST:event_projectorBtnActionPerformed
+
+    private void VolumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_VolumeSliderStateChanged
+        // TODO add your handling code here:
+        infoLbl.setText("Mobile Volumn value= "+String.valueOf(laptopVolumeSlider.getValue()));
+        try {
+            mobile.setVolume(laptopVolumeSlider.getValue());
+            socket = servicePorts.get("MobileService");      
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(gson.toJson(laptop));
+        } catch (Exception e) {
+        }  
+    }//GEN-LAST:event_VolumeSliderStateChanged
 
     /**
      * @param args the command line arguments

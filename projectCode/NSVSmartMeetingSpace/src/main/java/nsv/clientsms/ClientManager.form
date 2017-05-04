@@ -485,6 +485,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JSlider" name="VolumeSlider">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="VolumeSliderStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>

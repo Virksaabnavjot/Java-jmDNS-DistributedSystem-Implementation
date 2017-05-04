@@ -83,7 +83,7 @@ public class ClientManager extends javax.swing.JFrame {
         dnTF = new javax.swing.JTextField();
         ProjectorPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        projectorToggle = new javax.swing.JToggleButton();
         MobilePanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         VolumeSlider = new javax.swing.JSlider();
@@ -306,7 +306,22 @@ public class ClientManager extends javax.swing.JFrame {
 
         jLabel6.setText("Projector");
 
-        jToggleButton2.setText("ON/OFF");
+        projectorToggle.setText("ON/OFF");
+        projectorToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                projectorToggleItemStateChanged(evt);
+            }
+        });
+        projectorToggle.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                projectorToggleStateChanged(evt);
+            }
+        });
+        projectorToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projectorToggleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ProjectorPanelLayout = new javax.swing.GroupLayout(ProjectorPanel);
         ProjectorPanel.setLayout(ProjectorPanelLayout);
@@ -319,7 +334,7 @@ public class ClientManager extends javax.swing.JFrame {
             .addGroup(ProjectorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(ProjectorPanelLayout.createSequentialGroup()
                     .addGap(35, 35, 35)
-                    .addComponent(jToggleButton2)
+                    .addComponent(projectorToggle)
                     .addContainerGap(35, Short.MAX_VALUE)))
         );
         ProjectorPanelLayout.setVerticalGroup(
@@ -331,7 +346,7 @@ public class ClientManager extends javax.swing.JFrame {
             .addGroup(ProjectorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(ProjectorPanelLayout.createSequentialGroup()
                     .addGap(91, 91, 91)
-                    .addComponent(jToggleButton2)
+                    .addComponent(projectorToggle)
                     .addContainerGap(91, Short.MAX_VALUE)))
         );
 
@@ -494,10 +509,10 @@ public class ClientManager extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean flag=false;
         if(evt.getStateChange()==ItemEvent.SELECTED){
-        System.out.println("Light is ON");
+        infoLbl.setText("Light is ON");
         flag=true;
       } else if(evt.getStateChange()==ItemEvent.DESELECTED){
-        System.out.println("Light is OFF");
+        infoLbl.setText("Light is OFF");
         flag=false;
       }
         
@@ -510,6 +525,36 @@ public class ClientManager extends javax.swing.JFrame {
         }  
    
     }//GEN-LAST:event_lightTogbuttonItemStateChanged
+
+    private void projectorToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectorToggleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_projectorToggleActionPerformed
+
+    private void projectorToggleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_projectorToggleStateChanged
+   
+        // TODO add your handling code here:
+    }//GEN-LAST:event_projectorToggleStateChanged
+
+    private void projectorToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_projectorToggleItemStateChanged
+        // TODO add your handling code here:
+     boolean flag=false;
+        if(evt.getStateChange()==ItemEvent.SELECTED){
+        infoLbl.setText("Light is ON");
+        flag=true;
+      } else if(evt.getStateChange()==ItemEvent.DESELECTED){
+        infoLbl.setText("Light is OFF");
+        flag=false;
+      }
+        
+     try {
+            projector.setSwitchedOn(flag);
+            socket = servicePorts.get("ProjectorService");      
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(gson.toJson(projector));
+        } catch (Exception e) {
+        }  
+   
+    }//GEN-LAST:event_projectorToggleItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -568,7 +613,6 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JButton laptopBtn;
     private javax.swing.JPanel laptopPanel;
     private javax.swing.JSlider laptopVolumeSlider;
@@ -577,5 +621,6 @@ public class ClientManager extends javax.swing.JFrame {
     private javax.swing.JButton mobilePhoneBtn;
     private javax.swing.JButton printerBtn;
     private javax.swing.JButton projectorBtn;
+    private javax.swing.JToggleButton projectorToggle;
     // End of variables declaration//GEN-END:variables
 }

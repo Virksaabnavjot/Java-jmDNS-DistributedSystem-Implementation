@@ -96,3 +96,5 @@ Created - MobilePhone.java
 Created - ClientMangers GUI's panels and code
 
 
+
+Copyrights - Navjot Singh Virk (https://navjot.mrvirk.com & https://mrvirk.com)
